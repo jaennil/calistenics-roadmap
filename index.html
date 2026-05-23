@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calisthenics Roadmap — с нуля до элементов</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Calisthenics Roadmap</h1>
+            <p class="subtitle">Путь от нуля до продвинутых элементов</p>
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progressText">0 / 0</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn btn-secondary" id="expandAllBtn">Развернуть всё</button>
+                <button class="btn btn-secondary" id="collapseAllBtn">Свернуть всё</button>
+                <button class="btn btn-danger" id="resetBtn">Сбросить прогресс</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <h2>С чего начать</h2>
+            <p>Тренируйся 3–4 раза в неделю. Переходи к следующему упражнению, только когда уверенно выполняешь целевые подходы и повторения с чистой техникой. Каждое занятие начинай с разминки 5–10 минут (суставная разминка + лёгкое кардио).</p>
+            <ul class="tips">
+                <li><strong>Прогрессия:</strong> 3 подхода × целевые повторы → готов к следующему уровню</li>
+                <li><strong>Отдых:</strong> между подходами 1.5–3 минуты, между тренировками 24–48 часов на группу мышц</li>
+                <li><strong>Питание:</strong> белок 1.5–2г на кг веса, профицит/дефицит по цели</li>
+                <li><strong>Сон:</strong> 7–9 часов — без него нет роста</li>
+            </ul>
+        </section>
+
+        <div id="roadmap"></div>
+
+        <footer class="footer">
+            <p>Прогресс сохраняется автоматически в этом браузере.</p>
+        </footer>
+    </main>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

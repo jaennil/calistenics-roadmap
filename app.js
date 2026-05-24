@@ -197,35 +197,30 @@ function updateModalToggleBtn(exerciseId) {
 
 function renderExercise(exercise, category, stage) {
     const isDone = !!progress[exercise.id];
-    const meta = CATEGORY_META[category.kind] || { icon: "💪", color: "#888" };
 
-    const el = document.createElement("div");
+    const el = document.createElement("button");
     el.className = "exercise" + (isDone ? " done" : "");
     el.dataset.exerciseId = exercise.id;
+    el.type = "button";
 
-    const media = document.createElement("div");
-    media.className = "exercise-media";
-    media.appendChild(buildMedia(exercise, category, false));
-
-    const check = document.createElement("div");
+    const check = document.createElement("span");
     check.className = "exercise-check";
     check.addEventListener("click", (e) => {
         e.stopPropagation();
         toggleExercise(exercise.id, stage);
     });
 
-    const body = document.createElement("div");
+    const body = document.createElement("span");
     body.className = "exercise-body";
-    const name = document.createElement("div");
+    const name = document.createElement("span");
     name.className = "exercise-name";
     name.textContent = exercise.name;
-    const target = document.createElement("div");
+    const target = document.createElement("span");
     target.className = "exercise-target";
     target.textContent = exercise.target;
     body.appendChild(name);
     body.appendChild(target);
 
-    el.appendChild(media);
     el.appendChild(check);
     el.appendChild(body);
 
@@ -243,44 +238,48 @@ function renderStage(stage, index) {
     el.className = "stage" + (isCompleted ? " completed" : "") + (isExpanded ? " expanded" : "");
     el.id = stage.id;
 
-    const number = document.createElement("div");
-    number.className = "stage-number";
-    number.textContent = index;
-    el.appendChild(number);
-
-    const header = document.createElement("div");
+    const header = document.createElement("button");
     header.className = "stage-header";
+    header.type = "button";
     header.innerHTML = `
-        <div class="stage-title-block">
-            <div class="stage-title">
-                <span class="stage-title-text"></span>
-                <span class="stage-period"></span>
-            </div>
-            <div class="stage-description"></div>
+        <div class="stage-title-row">
+            <span class="stage-num">${index}</span>
+            <span class="stage-title-text"></span>
         </div>
-        <div class="stage-meta">
-            <div class="stage-progress">${done} / ${total}</div>
-            <div class="toggle-icon">⌄</div>
-        </div>
+        <span class="stage-period"></span>
+        <span class="stage-progress-pill">${done} / ${total}</span>
+        <span class="toggle-hint">▾</span>
     `;
-    header.querySelector(".stage-title-text").textContent = stage.title;
+    header.querySelector(".stage-title-text").textContent = stage.title.replace(/^Этап \d+ — /, "");
     header.querySelector(".stage-period").textContent = stage.period;
-    header.querySelector(".stage-description").textContent = stage.description;
     header.addEventListener("click", () => toggleStage(stage.id));
 
     const content = document.createElement("div");
     content.className = "stage-content";
     const inner = document.createElement("div");
-    inner.className = "stage-inner";
+    inner.className = "stage-content-inner";
+
+    if (stage.description) {
+        const desc = document.createElement("div");
+        desc.className = "stage-description";
+        desc.textContent = stage.description;
+        inner.appendChild(desc);
+    }
+
+    const bar = document.createElement("div");
+    bar.className = "categories-bar";
 
     stage.categories.forEach(category => {
-        const meta = CATEGORY_META[category.kind] || { icon: "💪", color: "#888" };
+        const meta = CATEGORY_META[category.kind] || { icon: "", color: "#888" };
         const catEl = document.createElement("div");
         catEl.className = "category";
 
+        const box = document.createElement("div");
+        box.className = "category-box";
+
         const catHeader = document.createElement("div");
         catHeader.className = "category-header";
-        const catIcon = document.createElement("div");
+        const catIcon = document.createElement("span");
         catIcon.className = "category-icon";
         catIcon.style.background = meta.color + "22";
         catIcon.style.color = meta.color;
@@ -290,17 +289,19 @@ function renderStage(stage, index) {
         catTitle.textContent = category.title;
         catHeader.appendChild(catIcon);
         catHeader.appendChild(catTitle);
-        catEl.appendChild(catHeader);
+        box.appendChild(catHeader);
 
         const exList = document.createElement("div");
-        exList.className = "exercises";
+        exList.className = "exercises-list";
         category.exercises.forEach(ex => {
             exList.appendChild(renderExercise(ex, category, stage));
         });
-        catEl.appendChild(exList);
-        inner.appendChild(catEl);
+        box.appendChild(exList);
+        catEl.appendChild(box);
+        bar.appendChild(catEl);
     });
 
+    inner.appendChild(bar);
     content.appendChild(inner);
     el.appendChild(header);
     el.appendChild(content);

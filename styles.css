@@ -380,22 +380,19 @@ body {
     right: 0;
 }
 
-/* Бокс категории */
-.category-box {
-    background: var(--bg-card);
-    border: 2px solid var(--border-strong);
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
-}
-
-.category-header {
-    padding: 8px 12px;
-    background: var(--bg-elevated);
-    border-bottom: 2px solid var(--border-strong);
-    display: flex;
+/* Заголовок категории — отдельная нода */
+.category-node {
+    display: inline-flex;
     align-items: center;
     gap: 8px;
+    padding: 8px 14px;
+    background: var(--bg-elevated);
+    border: 2px solid var(--border-strong);
+    border-radius: 6px;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
 .category-icon {
@@ -419,40 +416,76 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text);
+    white-space: nowrap;
 }
 
+/* Колонка нод-упражнений под категорией */
 .exercises-list {
-    padding: 8px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    align-items: center;
+    margin-top: 18px;
+    position: relative;
 }
 
-/* Таблетка упражнения — в стиле roadmap.sh */
+/* Линия от ноды категории к колонке упражнений */
+.exercises-list::before {
+    content: "";
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    width: var(--line-w);
+    height: 18px;
+    background: var(--border-strong);
+    transform: translateX(-50%);
+}
+
+/* Каждое упражнение — отдельный бокс-нода */
 .exercise {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 10px;
-    background: var(--bg-elevated);
+    padding: 8px 12px;
+    background: var(--bg-card);
     border: 1.5px solid var(--border-strong);
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     transition: all 0.15s ease;
     position: relative;
     text-align: left;
     color: var(--text);
+    width: 200px;
+    max-width: 100%;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* Вертикальная веточка между сиблингами-упражнениями */
+.exercise:not(:first-child) {
+    margin-top: 10px;
+}
+
+.exercise:not(:first-child)::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: var(--line-w);
+    height: 10px;
+    background: var(--border-strong);
+    transform: translateX(-50%);
 }
 
 .exercise:hover {
     border-color: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: 2px 2px 0 rgba(251, 191, 36, 0.2);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 rgba(251, 191, 36, 0.3);
+    z-index: 2;
 }
 
 .exercise.done {
-    background: rgba(16, 185, 129, 0.1);
+    background: rgba(16, 185, 129, 0.12);
     border-color: var(--success);
+    box-shadow: 2px 2px 0 rgba(16, 185, 129, 0.3);
 }
 
 .exercise.done .exercise-name {
@@ -461,8 +494,8 @@ body {
 }
 
 .exercise-check {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     background: var(--bg);
     border: 1.5px solid var(--border-strong);
     border-radius: 3px;
@@ -482,26 +515,28 @@ body {
     content: "✓";
     color: white;
     font-weight: 800;
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1;
 }
 
 .exercise-body {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .exercise-name {
     font-weight: 600;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     line-height: 1.25;
-    margin-bottom: 1px;
 }
 
 .exercise-target {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     color: var(--text-muted);
     font-variant-numeric: tabular-nums;
+    margin-top: 1px;
 }
 
 .stage-description {

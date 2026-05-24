@@ -274,11 +274,8 @@ function renderStage(stage, index) {
         const catEl = document.createElement("div");
         catEl.className = "category";
 
-        const box = document.createElement("div");
-        box.className = "category-box";
-
-        const catHeader = document.createElement("div");
-        catHeader.className = "category-header";
+        const catNode = document.createElement("div");
+        catNode.className = "category-node";
         const catIcon = document.createElement("span");
         catIcon.className = "category-icon";
         catIcon.style.background = meta.color + "22";
@@ -287,17 +284,16 @@ function renderStage(stage, index) {
         const catTitle = document.createElement("h3");
         catTitle.className = "category-title";
         catTitle.textContent = category.title;
-        catHeader.appendChild(catIcon);
-        catHeader.appendChild(catTitle);
-        box.appendChild(catHeader);
+        catNode.appendChild(catIcon);
+        catNode.appendChild(catTitle);
+        catEl.appendChild(catNode);
 
         const exList = document.createElement("div");
         exList.className = "exercises-list";
         category.exercises.forEach(ex => {
             exList.appendChild(renderExercise(ex, category, stage));
         });
-        box.appendChild(exList);
-        catEl.appendChild(box);
+        catEl.appendChild(exList);
         bar.appendChild(catEl);
     });
 

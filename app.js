@@ -49,6 +49,7 @@ function saveUIState(state) {
 
 let progress = loadProgress();
 let uiState = loadUIState();
+let activeExercise = null;
 
 function countExercises() {
     let total = 0;
@@ -93,11 +94,7 @@ function updateStageProgress(stage) {
     if (progressEl) {
         progressEl.textContent = `${done} / ${total}`;
     }
-    if (done === total && total > 0) {
-        stageEl.classList.add("completed");
-    } else {
-        stageEl.classList.remove("completed");
-    }
+    stageEl.classList.toggle("completed", done === total && total > 0);
 }
 
 function toggleExercise(exerciseId, stage) {
@@ -116,6 +113,7 @@ function toggleExercise(exerciseId, stage) {
     }
     updateStageProgress(stage);
     updateGlobalProgress();
+    updateModalToggleBtn(exerciseId);
 }
 
 function toggleStage(stageId) {
@@ -133,25 +131,106 @@ function toggleStage(stageId) {
     log("stage toggled:", stageId, "expanded:", isExpanded);
 }
 
-function renderExercise(exercise, stage) {
+function buildFallback(meta, isLarge) {
+    const fallback = document.createElement("div");
+    fallback.className = isLarge ? "modal-media-fallback" : "exercise-media-fallback";
+    fallback.style.setProperty("--cat-color", meta.color);
+    fallback.style.color = meta.color;
+    fallback.innerHTML = meta.icon;
+    return fallback;
+}
+
+function buildMedia(exercise, category, isLarge) {
+    const meta = CATEGORY_META[category.kind] || { icon: "", color: "#888" };
+    if (EXERCISES_WITH_GIF.has(exercise.id)) {
+        const img = document.createElement("img");
+        img.src = `img/${exercise.id}.gif`;
+        img.alt = exercise.name;
+        img.loading = "lazy";
+        img.onerror = () => {
+            log("image failed to load:", exercise.id);
+            img.replaceWith(buildFallback(meta, isLarge));
+        };
+        return img;
+    }
+    return buildFallback(meta, isLarge);
+}
+
+function openModal(exercise, category, stage) {
+    activeExercise = { exercise, category, stage };
+    log("modal open:", exercise.id);
+
+    const meta = CATEGORY_META[category.kind] || { icon: "💪", color: "#888" };
+
+    const mediaEl = document.getElementById("modalMedia");
+    mediaEl.innerHTML = "";
+    mediaEl.appendChild(buildMedia(exercise, category, true));
+
+    document.getElementById("modalCategory").innerHTML = `<span class="modal-cat-icon" style="color:${meta.color}">${meta.icon}</span> ${category.title}`;
+    document.getElementById("modalTitle").textContent = exercise.name;
+    document.getElementById("modalTarget").textContent = exercise.target;
+    document.getElementById("modalTip").textContent = exercise.tip || "";
+
+    const videoLink = document.getElementById("modalVideo");
+    videoLink.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(exercise.name + " technique calisthenics")}`;
+
+    updateModalToggleBtn(exercise.id);
+
+    document.getElementById("modalBackdrop").classList.add("open");
+    document.body.style.overflow = "hidden";
+}
+
+function closeModal() {
+    document.getElementById("modalBackdrop").classList.remove("open");
+    document.body.style.overflow = "";
+    activeExercise = null;
+    log("modal closed");
+}
+
+function updateModalToggleBtn(exerciseId) {
+    if (!activeExercise || activeExercise.exercise.id !== exerciseId) return;
+    const btn = document.getElementById("modalToggle");
+    const isDone = !!progress[exerciseId];
+    btn.textContent = isDone ? "✓ Выполнено — снять отметку" : "Отметить выполненным";
+    btn.classList.toggle("done", isDone);
+}
+
+function renderExercise(exercise, category, stage) {
     const isDone = !!progress[exercise.id];
+    const meta = CATEGORY_META[category.kind] || { icon: "💪", color: "#888" };
+
     const el = document.createElement("div");
     el.className = "exercise" + (isDone ? " done" : "");
     el.dataset.exerciseId = exercise.id;
-    el.innerHTML = `
-        <div class="exercise-checkbox"></div>
-        <div class="exercise-body">
-            <div class="exercise-name"></div>
-            <div class="exercise-target"></div>
-            ${exercise.tip ? '<div class="exercise-tip"></div>' : ''}
-        </div>
-    `;
-    el.querySelector(".exercise-name").textContent = exercise.name;
-    el.querySelector(".exercise-target").textContent = exercise.target;
-    if (exercise.tip) {
-        el.querySelector(".exercise-tip").textContent = exercise.tip;
-    }
-    el.addEventListener("click", () => toggleExercise(exercise.id, stage));
+
+    const media = document.createElement("div");
+    media.className = "exercise-media";
+    media.appendChild(buildMedia(exercise, category, false));
+
+    const check = document.createElement("div");
+    check.className = "exercise-check";
+    check.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleExercise(exercise.id, stage);
+    });
+
+    const body = document.createElement("div");
+    body.className = "exercise-body";
+    const name = document.createElement("div");
+    name.className = "exercise-name";
+    name.textContent = exercise.name;
+    const target = document.createElement("div");
+    target.className = "exercise-target";
+    target.textContent = exercise.target;
+    body.appendChild(name);
+    body.appendChild(target);
+
+    el.appendChild(media);
+    el.appendChild(check);
+    el.appendChild(body);
+
+    el.addEventListener("click", () => openModal(exercise, category, stage));
+
     return el;
 }
 
@@ -164,22 +243,28 @@ function renderStage(stage, index) {
     el.className = "stage" + (isCompleted ? " completed" : "") + (isExpanded ? " expanded" : "");
     el.id = stage.id;
 
+    const number = document.createElement("div");
+    number.className = "stage-number";
+    number.textContent = index;
+    el.appendChild(number);
+
     const header = document.createElement("div");
     header.className = "stage-header";
     header.innerHTML = `
         <div class="stage-title-block">
-            <div class="stage-number">${index}</div>
-            <div>
-                <div class="stage-title"></div>
-                <div class="stage-description"></div>
+            <div class="stage-title">
+                <span class="stage-title-text"></span>
+                <span class="stage-period"></span>
             </div>
+            <div class="stage-description"></div>
         </div>
         <div class="stage-meta">
             <div class="stage-progress">${done} / ${total}</div>
             <div class="toggle-icon">⌄</div>
         </div>
     `;
-    header.querySelector(".stage-title").textContent = stage.title;
+    header.querySelector(".stage-title-text").textContent = stage.title;
+    header.querySelector(".stage-period").textContent = stage.period;
     header.querySelector(".stage-description").textContent = stage.description;
     header.addEventListener("click", () => toggleStage(stage.id));
 
@@ -189,17 +274,28 @@ function renderStage(stage, index) {
     inner.className = "stage-inner";
 
     stage.categories.forEach(category => {
+        const meta = CATEGORY_META[category.kind] || { icon: "💪", color: "#888" };
         const catEl = document.createElement("div");
         catEl.className = "category";
-        const titleEl = document.createElement("h3");
-        titleEl.className = "category-title";
-        titleEl.textContent = category.title;
-        catEl.appendChild(titleEl);
+
+        const catHeader = document.createElement("div");
+        catHeader.className = "category-header";
+        const catIcon = document.createElement("div");
+        catIcon.className = "category-icon";
+        catIcon.style.background = meta.color + "22";
+        catIcon.style.color = meta.color;
+        catIcon.innerHTML = meta.icon;
+        const catTitle = document.createElement("h3");
+        catTitle.className = "category-title";
+        catTitle.textContent = category.title;
+        catHeader.appendChild(catIcon);
+        catHeader.appendChild(catTitle);
+        catEl.appendChild(catHeader);
 
         const exList = document.createElement("div");
         exList.className = "exercises";
         category.exercises.forEach(ex => {
-            exList.appendChild(renderExercise(ex, stage));
+            exList.appendChild(renderExercise(ex, category, stage));
         });
         catEl.appendChild(exList);
         inner.appendChild(catEl);
@@ -253,5 +349,19 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("expandAllBtn").addEventListener("click", expandAll);
     document.getElementById("collapseAllBtn").addEventListener("click", collapseAll);
     document.getElementById("resetBtn").addEventListener("click", resetProgress);
+
+    document.getElementById("modalClose").addEventListener("click", closeModal);
+    document.getElementById("modalBackdrop").addEventListener("click", (e) => {
+        if (e.target.id === "modalBackdrop") closeModal();
+    });
+    document.getElementById("modalToggle").addEventListener("click", () => {
+        if (activeExercise) {
+            toggleExercise(activeExercise.exercise.id, activeExercise.stage);
+        }
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && activeExercise) closeModal();
+    });
+
     log("init complete");
 });

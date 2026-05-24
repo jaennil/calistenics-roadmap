@@ -29,23 +29,29 @@
     </header>
 
     <main class="container">
-        <section class="intro">
-            <h2>С чего начать</h2>
-            <p>Тренируйся 3–4 раза в неделю. Переходи к следующему упражнению, только когда уверенно выполняешь целевые подходы и повторения с чистой техникой. Каждое занятие начинай с разминки 5–10 минут (суставная разминка + лёгкое кардио).</p>
-            <ul class="tips">
-                <li><strong>Прогрессия:</strong> 3 подхода × целевые повторы → готов к следующему уровню</li>
-                <li><strong>Отдых:</strong> между подходами 1.5–3 минуты, между тренировками 24–48 часов на группу мышц</li>
-                <li><strong>Питание:</strong> белок 1.5–2г на кг веса, профицит/дефицит по цели</li>
-                <li><strong>Сон:</strong> 7–9 часов — без него нет роста</li>
-            </ul>
-        </section>
-
-        <div id="roadmap"></div>
+        <div class="roadmap" id="roadmap"></div>
 
         <footer class="footer">
-            <p>Прогресс сохраняется автоматически в этом браузере.</p>
+            <p>Прогресс сохраняется автоматически в этом браузере. Клик по карточке упражнения — детали и GIF.</p>
         </footer>
     </main>
+
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal" id="modal" role="dialog" aria-modal="true">
+            <button class="modal-close" id="modalClose" aria-label="Закрыть">×</button>
+            <div class="modal-media" id="modalMedia"></div>
+            <div class="modal-body">
+                <div class="modal-category" id="modalCategory"></div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <div class="modal-target" id="modalTarget"></div>
+                <div class="modal-tip" id="modalTip"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" id="modalToggle">Отметить выполненным</button>
+                    <a class="btn btn-secondary" id="modalVideo" target="_blank" rel="noopener">Видео техники ↗</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="data.js"></script>
     <script src="app.js"></script>

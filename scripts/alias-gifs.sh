@@ -24,6 +24,22 @@ declare -A ALIASES=(
     [s5-9]=s4-4      # HSPU freestanding <- HSPU у стены
     [s5-10]=s5-2     # Planche push-up   <- Planche
     [s5-11]=s5-3     # Front lever pull  <- Front lever
+    # Расширение Элиты — статика
+    [s5-13]=s4-9     # V-sit            <- L-sit на брусьях
+    [s5-14]=s4-9     # Manna            <- L-sit
+    [s5-15]=s5-2     # 90-degree pushup hold <- Planche
+    # Расширение Элиты — сила
+    [s5-16]=s4-3     # Press to handstand <- Freestanding handstand
+    [s5-17]=s4-3     # One-arm handstand  <- Handstand
+    [s5-18]=s4-1     # Hefesto            <- Muscle-up (обратный)
+    [s5-19]=s5-4     # Back lever pull-up <- Back lever
+    [s5-20]=s4-3     # Tiger bend press   <- Handstand
+    # Расширение Элиты — кольца/динамика
+    [s5-21]=s2-4     # Russian dip        <- Dips
+    [s5-22]=s2-4     # Korean dip         <- Dips
+    [s5-23]=s5-6     # Victorian cross    <- Maltese
+    [s5-24]=s5-12    # Inverted cross     <- Iron cross
+    [s5-25]=s4-1     # Reverse muscle-up  <- Muscle-up
 )
 
 ok=0

@@ -229,18 +229,21 @@ const ROADMAP = [
         id: "stage-5",
         title: "Этап 5 — Элита",
         period: "2+ года",
-        description: "Топ-элементы калистеники. Требуют системного и долгого подхода.",
+        description: "Топ-элементы калистеники. Требуют системного и долгого подхода. Многие требуют доступа к кольцам.",
         categories: [
             {
                 title: "Статические элементы",
                 kind: "skill",
                 exercises: [
-                    { id: "s5-1", name: "Straddle planche", target: "3×10 секунд", tip: "Ноги разведены в стороны" },
-                    { id: "s5-2", name: "Full planche", target: "3×5 секунд", tip: "" },
-                    { id: "s5-3", name: "Full front lever", target: "3×10 секунд", tip: "" },
-                    { id: "s5-4", name: "Full back lever", target: "3×10 секунд", tip: "" },
+                    { id: "s5-1", name: "Straddle planche", target: "3×10 секунд", tip: "Ноги разведены в стороны — облегчённая версия full planche" },
+                    { id: "s5-2", name: "Full planche", target: "3×5 секунд", tip: "Тело параллельно полу, ноги вместе" },
+                    { id: "s5-3", name: "Full front lever", target: "3×10 секунд", tip: "Лицом вверх, тело параллельно полу" },
+                    { id: "s5-4", name: "Full back lever", target: "3×10 секунд", tip: "Лицом вниз, тело параллельно полу" },
                     { id: "s5-5", name: "Human flag", target: "3×8 секунд", tip: "Тело горизонтально, опора на вертикальный шест" },
-                    { id: "s5-6", name: "Maltese (assisted)", target: "3×5 секунд", tip: "" }
+                    { id: "s5-13", name: "V-sit", target: "3×5 секунд", tip: "Продвинутый L-sit — ноги выше уровня головы" },
+                    { id: "s5-14", name: "Manna", target: "3×3 секунды", tip: "Из V-sit прогиб назад с опорой на руки" },
+                    { id: "s5-15", name: "90-degree push-up hold", target: "3×5 секунд", tip: "Тело горизонтально, руки согнуты под 90°" },
+                    { id: "s5-6", name: "Maltese (assisted)", target: "3×5 секунд", tip: "Тело параллельно полу, руки в стороны, на кольцах" }
                 ]
             },
             {
@@ -249,10 +252,26 @@ const ROADMAP = [
                 exercises: [
                     { id: "s5-7", name: "One-arm pull-up", target: "1 чистое повторение", tip: "Король калистеники" },
                     { id: "s5-8", name: "One-arm push-up", target: "3×5 на руку", tip: "Без поворота корпуса" },
-                    { id: "s5-9", name: "Handstand push-up freestanding", target: "3×3", tip: "Без стены" },
-                    { id: "s5-10", name: "Planche push-up", target: "3×3", tip: "" },
-                    { id: "s5-11", name: "Front lever pull-up", target: "3×3", tip: "" },
-                    { id: "s5-12", name: "Iron cross (на кольцах)", target: "3×5 секунд", tip: "Если есть доступ к кольцам" }
+                    { id: "s5-9", name: "Handstand push-up freestanding", target: "3×3", tip: "Без стены, полная амплитуда" },
+                    { id: "s5-10", name: "Planche push-up", target: "3×3", tip: "Отжимание в планше" },
+                    { id: "s5-11", name: "Front lever pull-up", target: "3×3", tip: "Подтягивание из позиции front lever" },
+                    { id: "s5-16", name: "Press to handstand", target: "3×3", tip: "Выход в стойку на руках без прыжка, через L-sit/straddle" },
+                    { id: "s5-17", name: "One-arm handstand", target: "1×5 секунд", tip: "Стойка на одной руке" },
+                    { id: "s5-18", name: "Hefesto", target: "1 чистое повторение", tip: "Обратный muscle-up — выход из back lever" },
+                    { id: "s5-19", name: "Back lever pull-up", target: "3×3", tip: "Подтягивание из back lever" },
+                    { id: "s5-20", name: "Tiger bend press", target: "3×3", tip: "Жим в стойку из позиции на предплечьях" }
+                ]
+            },
+            {
+                title: "Кольца и динамика",
+                kind: "skill",
+                exercises: [
+                    { id: "s5-12", name: "Iron cross", target: "3×5 секунд", tip: "Железный крест на кольцах" },
+                    { id: "s5-21", name: "Russian dip", target: "3×3", tip: "Отжимание на брусьях с переходом через предплечья" },
+                    { id: "s5-22", name: "Korean dip", target: "3×3", tip: "Отжимание на брусьях лицом назад" },
+                    { id: "s5-23", name: "Victorian cross", target: "1×3 секунды", tip: "Maltese в обратном положении — лицом вниз" },
+                    { id: "s5-24", name: "Inverted cross", target: "1×3 секунды", tip: "Перевёрнутый железный крест на кольцах" },
+                    { id: "s5-25", name: "Reverse muscle-up", target: "1 чистое повторение", tip: "Опускание из muscle-up в полный передний рычаг" }
                 ]
             }
         ]

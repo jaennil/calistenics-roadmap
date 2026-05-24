@@ -27,6 +27,13 @@ MAPPING=(
     "s4-5:Dand_(Basic).gif"
     "s5-5:Human_Flag_by_Romans_Janovics_in_Daugavpils,_Latvia.jpg"
     "s5-12:2019-06-29_1st_FIG_Artistic_Gymnastics_JWCH_Men's_Apparatus_finals_Still_rings_(Martin_Rulsch)_140.jpg"
+    "s0-1:Jumpingjacks.gif"
+    "s0-4:Bodyweight_Squats.gif"
+    "s0-5:High_knees.gif"
+    "s1-1:Liegestuetz02_ani_fcm.gif"
+    "s3-9:Onearmpullup.gif"
+    "s4-11:Onearmpullup.gif"
+    "s5-7:Onearmpullup.gif"
 )
 
 ok=0

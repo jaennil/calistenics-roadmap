@@ -3,19 +3,35 @@
     --bg-elevated: #131a23;
     --bg-card: #1a2230;
     --bg-card-hover: #1f2937;
-    --border: #2a3445;
-    --border-strong: #4a5566;
+
+    --node-yellow: #fbbf24;
+    --node-yellow-strong: #f59e0b;
+    --node-yellow-soft: #2a2310;
+    --node-yellow-text: #1a1408;
+
+    --node-cat-bg: #1f2937;
+    --node-cat-border: #facc15;
+
+    --node-ex-bg: #1a2230;
+    --node-ex-border: #4b5563;
+    --node-ex-locked: #131a23;
+
+    --line: #fbbf24;
+    --line-soft: #6b7280;
+    --line-done: #10b981;
+
     --text: #e6e9ed;
-    --text-muted: #8a95a3;
+    --text-muted: #94a3b8;
     --text-faint: #5b6573;
-    --accent: #fbbf24;
-    --accent-strong: #f59e0b;
-    --accent-soft: #fef3c7;
-    --success: #10b981;
-    --in-progress: #3b82f6;
+    --text-dark: #1a1408;
+
+    --status-empty: #4b5563;
+    --status-empty-bg: #0a0e14;
+    --status-done: #10b981;
+    --status-locked: #374151;
+
     --danger: #ef4444;
-    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
-    --shadow-elevated: 0 10px 40px rgba(0, 0, 0, 0.5);
+
     --line-w: 2px;
 }
 
@@ -36,28 +52,28 @@ body {
     line-height: 1.5;
     min-height: 100vh;
     background-image:
-        radial-gradient(circle at 20% 0%, rgba(251, 191, 36, 0.04) 0%, transparent 40%),
-        radial-gradient(circle at 80% 100%, rgba(59, 130, 246, 0.04) 0%, transparent 40%);
+        radial-gradient(circle at 15% 0%, rgba(251, 191, 36, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 85% 100%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 0 24px;
 }
 
 .header {
-    padding: 48px 0 32px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 40px;
+    padding: 44px 0 28px;
+    border-bottom: 1px solid var(--bg-card);
+    margin-bottom: 36px;
     text-align: center;
 }
 
 .header h1 {
-    font-size: 2.6rem;
+    font-size: 2.5rem;
     font-weight: 800;
-    margin-bottom: 6px;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+    margin-bottom: 4px;
+    background: linear-gradient(135deg, var(--node-yellow) 0%, var(--node-yellow-strong) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -66,13 +82,13 @@ body {
 
 .subtitle {
     color: var(--text-muted);
-    font-size: 1.05rem;
-    margin-bottom: 28px;
+    font-size: 1rem;
+    margin-bottom: 24px;
 }
 
 .progress-wrapper {
-    margin-bottom: 22px;
-    max-width: 720px;
+    margin-bottom: 20px;
+    max-width: 640px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -82,12 +98,12 @@ body {
     background: var(--bg-card);
     border-radius: 6px;
     overflow: hidden;
-    border: 1px solid var(--border);
+    border: 1px solid var(--bg-card-hover);
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent) 0%, var(--success) 100%);
+    background: linear-gradient(90deg, var(--node-yellow) 0%, var(--status-done) 100%);
     transition: width 0.4s ease;
     width: 0%;
 }
@@ -95,68 +111,67 @@ body {
 .progress-text {
     display: flex;
     justify-content: space-between;
-    margin-top: 8px;
-    font-size: 0.88rem;
+    margin-top: 6px;
+    font-size: 0.85rem;
     color: var(--text-muted);
 }
 
 #progressPercent {
-    font-weight: 700;
-    color: var(--accent);
+    font-weight: 800;
+    color: var(--node-yellow);
 }
 
 .controls {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .btn {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 600;
+    padding: 8px 16px;
+    border: 1px solid var(--bg-card-hover);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.1s ease;
     font-family: inherit;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
+    background: var(--bg-card);
+    color: var(--text);
+}
+
+.btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--node-yellow);
 }
 
 .btn-primary {
-    background: var(--accent);
-    color: #1a1408;
+    background: var(--node-yellow);
+    color: var(--text-dark);
+    border-color: var(--node-yellow);
 }
 
 .btn-primary:hover {
-    background: var(--accent-strong);
+    background: var(--node-yellow-strong);
+    border-color: var(--node-yellow-strong);
 }
 
 .btn-primary.done {
-    background: var(--success);
+    background: var(--status-done);
     color: white;
-}
-
-.btn-secondary {
-    background: var(--bg-card);
-    color: var(--text);
-    border: 1px solid var(--border);
-}
-
-.btn-secondary:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--border-strong);
+    border-color: var(--status-done);
 }
 
 .btn-danger {
     background: transparent;
     color: var(--danger);
-    border: 1px solid var(--danger);
+    border-color: var(--danger);
 }
 
 .btn-danger:hover {
@@ -165,14 +180,14 @@ body {
 }
 
 /* ============================================
-   ROADMAP TREE — в стиле roadmap.sh
-   Центральная вертикальная линия + боксы этапов
-   + ветви категорий + таблетки упражнений
+   ROADMAP — настоящий roadmap.sh: ноды
+   соединены стрелочными линиями. Стрелка = логика
+   «выполнил X → переходишь к Y».
    ============================================ */
 
 .roadmap {
     position: relative;
-    padding: 20px 0 60px;
+    padding: 20px 0 40px;
 }
 
 .stage {
@@ -180,38 +195,47 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 60px;
+    margin-bottom: 52px;
+    z-index: 1;
 }
 
-/* Вертикальная пунктирная линия между этапами */
+/* Стрелка-связь между этапами */
 .stage:not(:last-child)::after {
     content: "";
     position: absolute;
-    bottom: -60px;
+    bottom: -42px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid var(--line);
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.stage:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    bottom: -42px;
     left: 50%;
     width: var(--line-w);
-    height: 60px;
-    background: repeating-linear-gradient(
-        to bottom,
-        var(--border-strong) 0,
-        var(--border-strong) 8px,
-        transparent 8px,
-        transparent 16px
-    );
+    height: 42px;
+    background: var(--line);
     transform: translateX(-50%);
 }
 
-/* Большой бокс этапа — желтый, в стиле roadmap.sh */
+/* Большой жёлтый бокс этапа */
 .stage-header {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     padding: 14px 32px;
-    background: var(--accent);
-    color: #1a1408;
-    border: 3px solid #1a1408;
+    background: var(--node-yellow);
+    color: var(--text-dark);
+    border: 3px solid var(--text-dark);
     border-radius: 6px;
-    box-shadow: 4px 4px 0 #1a1408;
+    box-shadow: 4px 4px 0 var(--text-dark);
     cursor: pointer;
     user-select: none;
     position: relative;
@@ -222,19 +246,12 @@ body {
 
 .stage-header:hover {
     transform: translate(-1px, -1px);
-    box-shadow: 5px 5px 0 #1a1408;
-}
-
-.stage-header:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 #1a1408;
+    box-shadow: 5px 5px 0 var(--text-dark);
 }
 
 .stage.completed .stage-header {
-    background: var(--success);
+    background: var(--status-done);
     color: white;
-    border-color: #04221a;
-    box-shadow: 4px 4px 0 #04221a;
 }
 
 .stage-title-row {
@@ -248,8 +265,8 @@ body {
 .stage-num {
     width: 28px;
     height: 28px;
-    background: #1a1408;
-    color: var(--accent);
+    background: var(--text-dark);
+    color: var(--node-yellow);
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
@@ -259,14 +276,14 @@ body {
 }
 
 .stage.completed .stage-num {
-    background: #04221a;
-    color: var(--success);
+    background: white;
+    color: var(--status-done);
 }
 
 .stage-period {
     font-size: 0.7rem;
     font-weight: 700;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.18);
     padding: 2px 8px;
     border-radius: 4px;
     margin-top: 4px;
@@ -275,20 +292,20 @@ body {
 }
 
 .stage-progress-pill {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    margin-top: 6px;
+    margin-top: 4px;
     font-variant-numeric: tabular-nums;
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
 .toggle-hint {
     position: absolute;
-    right: -28px;
+    right: -32px;
     top: 50%;
     transform: translateY(-50%);
     font-size: 1.2rem;
-    color: var(--border-strong);
+    color: var(--line-soft);
     transition: transform 0.2s ease;
 }
 
@@ -301,37 +318,36 @@ body {
     overflow: hidden;
     transition: max-height 0.4s ease;
     width: 100%;
-    margin-top: 0;
 }
 
 .stage.expanded .stage-content {
-    max-height: 8000px;
-    margin-top: 36px;
+    max-height: 12000px;
+    margin-top: 32px;
 }
 
-/* Вертикальная линия от заголовка этапа в дерево категорий */
 .stage-content-inner {
     position: relative;
     padding-top: 32px;
 }
 
+/* Линия от заголовка этапа в дерево категорий */
 .stage.expanded .stage-content-inner::before {
     content: "";
     position: absolute;
-    top: -36px;
+    top: -32px;
     left: 50%;
     width: var(--line-w);
-    height: 36px;
-    background: var(--border-strong);
+    height: 32px;
+    background: var(--line);
     transform: translateX(-50%);
 }
 
-/* Горизонтальная "ось", к которой крепятся ветки категорий */
+/* Горизонтальная "магистраль" над категориями */
 .categories-bar {
     position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    gap: 24px;
 }
 
 .categories-bar::before {
@@ -341,13 +357,16 @@ body {
     left: 12%;
     right: 12%;
     height: var(--line-w);
-    background: var(--border-strong);
+    background: var(--line);
 }
 
-/* Вертикальные "веточки" от горизонтальной оси к каждой категории */
+/* Вертикальная веточка от магистрали к каждой категории */
 .category {
     position: relative;
-    padding-top: 22px;
+    padding-top: 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .category::before {
@@ -356,53 +375,46 @@ body {
     top: -12px;
     left: 50%;
     width: var(--line-w);
-    height: 34px;
-    background: var(--border-strong);
+    height: 38px;
+    background: var(--line);
     transform: translateX(-50%);
 }
 
-/* По краям — линии не должны выходить за ось */
+/* Скрыть "выход" линии за края magistral'и */
 .category:first-child::after,
 .category:last-child::after {
     content: "";
     position: absolute;
-    top: -13px;
+    top: -14px;
     width: 50%;
-    height: 4px;
+    height: 6px;
     background: var(--bg);
+    z-index: 1;
 }
+.category:first-child::after { left: 0; }
+.category:last-child::after { right: 0; }
 
-.category:first-child::after {
-    left: 0;
-}
-
-.category:last-child::after {
-    right: 0;
-}
-
-/* Заголовок категории — отдельная нода */
+/* Бокс категории — тёмный, с жёлтой обводкой */
 .category-node {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 8px 14px;
-    background: var(--bg-elevated);
-    border: 2px solid var(--border-strong);
-    border-radius: 6px;
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
+    background: var(--node-cat-bg);
+    border: 2px solid var(--node-cat-border);
+    border-radius: 5px;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+    color: var(--text);
+    z-index: 2;
 }
 
 .category-icon {
-    width: 22px;
-    height: 22px;
-    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
 }
 
 .category-icon svg {
@@ -414,78 +426,102 @@ body {
     font-size: 0.78rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text);
+    letter-spacing: 0.04em;
+    color: var(--node-yellow);
     white-space: nowrap;
 }
 
-/* Колонка нод-упражнений под категорией */
+/* Вертикальная линия от категории к первому упражнению */
 .exercises-list {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 18px;
+    gap: 0;
+    margin-top: 14px;
     position: relative;
 }
 
-/* Линия от ноды категории к колонке упражнений */
 .exercises-list::before {
     content: "";
     position: absolute;
-    top: -18px;
+    top: -14px;
     left: 50%;
     width: var(--line-w);
-    height: 18px;
-    background: var(--border-strong);
+    height: 14px;
+    background: var(--line-soft);
     transform: translateX(-50%);
 }
 
-/* Каждое упражнение — отдельный бокс-нода */
+/* Каждое упражнение — отдельная нода */
 .exercise {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     padding: 8px 12px;
-    background: var(--bg-card);
-    border: 1.5px solid var(--border-strong);
+    background: var(--node-ex-bg);
+    border: 2px solid var(--node-ex-border);
     border-radius: 5px;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
     cursor: pointer;
-    transition: all 0.15s ease;
-    position: relative;
+    transition: transform 0.1s ease, border-color 0.15s ease;
     text-align: left;
     color: var(--text);
-    width: 200px;
-    max-width: 100%;
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+    font-family: inherit;
+    min-width: 200px;
+    max-width: 240px;
+    position: relative;
+    margin: 0;
 }
 
-/* Вертикальная веточка между сиблингами-упражнениями */
-.exercise:not(:first-child) {
-    margin-top: 10px;
+/* Стрелка-связь "выполнил → разблокирует" между сиблингами */
+.exercise:not(:last-child) {
+    margin-bottom: 30px;
 }
 
-.exercise:not(:first-child)::before {
+.exercise:not(:last-child)::after {
     content: "";
     position: absolute;
-    top: -10px;
+    bottom: -28px;
     left: 50%;
     width: var(--line-w);
-    height: 10px;
-    background: var(--border-strong);
+    height: 22px;
+    background: var(--line-soft);
     transform: translateX(-50%);
+}
+
+/* Стрелочка-наконечник */
+.exercise:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--line-soft);
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+/* Зелёная стрелка если предыдущее упражнение выполнено (= разблокировано) */
+.exercise.unlocked-by-prev:not(:last-child)::after {
+    background: var(--line-done);
+}
+.exercise.unlocked:not(:first-child)::before {
+    border-top-color: var(--line-done);
 }
 
 .exercise:hover {
-    border-color: var(--accent);
+    border-color: var(--node-yellow);
     transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0 rgba(251, 191, 36, 0.3);
-    z-index: 2;
+    box-shadow: 3px 3px 0 rgba(251, 191, 36, 0.25);
+    z-index: 3;
 }
 
 .exercise.done {
     background: rgba(16, 185, 129, 0.12);
-    border-color: var(--success);
-    box-shadow: 2px 2px 0 rgba(16, 185, 129, 0.3);
+    border-color: var(--status-done);
 }
 
 .exercise.done .exercise-name {
@@ -493,22 +529,35 @@ body {
     color: var(--text-muted);
 }
 
+/* Заблокированное упражнение — стиль "недоступно пока" */
+.exercise.locked {
+    opacity: 0.55;
+    background: var(--node-ex-locked);
+    border-style: dashed;
+}
+
+.exercise.locked .exercise-name {
+    color: var(--text-muted);
+}
+
+/* Кружок-индикатор слева от ноды (как в roadmap.sh) */
 .exercise-check {
-    width: 16px;
-    height: 16px;
-    background: var(--bg);
-    border: 1.5px solid var(--border-strong);
-    border-radius: 3px;
+    width: 18px;
+    height: 18px;
+    background: var(--status-empty-bg);
+    border: 2px solid var(--status-empty);
+    border-radius: 50%;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.15s ease;
+    cursor: pointer;
 }
 
 .exercise.done .exercise-check {
-    background: var(--success);
-    border-color: var(--success);
+    background: var(--status-done);
+    border-color: var(--status-done);
 }
 
 .exercise.done .exercise-check::after {
@@ -517,6 +566,17 @@ body {
     font-weight: 800;
     font-size: 11px;
     line-height: 1;
+}
+
+.exercise.locked .exercise-check {
+    border-color: var(--status-locked);
+    background: var(--status-locked);
+}
+
+.exercise.locked .exercise-check::after {
+    content: "🔒";
+    font-size: 9px;
+    filter: grayscale(1);
 }
 
 .exercise-body {
@@ -528,25 +588,25 @@ body {
 
 .exercise-name {
     font-weight: 600;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     line-height: 1.25;
 }
 
 .exercise-target {
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     color: var(--text-muted);
     font-variant-numeric: tabular-nums;
-    margin-top: 1px;
+    margin-top: 2px;
 }
 
 .stage-description {
-    margin-top: 24px;
-    padding: 12px 16px;
+    margin-top: 18px;
+    padding: 10px 14px;
     background: var(--bg-card);
-    border-left: 3px solid var(--accent);
+    border-left: 3px solid var(--node-yellow);
     border-radius: 4px;
     color: var(--text-muted);
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     max-width: 720px;
     margin-left: auto;
     margin-right: auto;
@@ -585,83 +645,59 @@ body {
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    border: 2px solid var(--border-strong);
-    box-shadow: var(--shadow-elevated), 6px 6px 0 rgba(0, 0, 0, 0.6);
+    border: 2px solid var(--bg-card-hover);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.6);
     position: relative;
     animation: slideUp 0.22s ease;
 }
 
 @keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .modal-close {
     position: absolute;
     top: 12px;
     right: 14px;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     background: rgba(10, 14, 20, 0.7);
-    border: 1px solid var(--border);
+    border: 1px solid var(--bg-card-hover);
     border-radius: 50%;
     color: var(--text);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     cursor: pointer;
     z-index: 5;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s ease;
-    backdrop-filter: blur(4px);
     line-height: 1;
 }
 
-.modal-close:hover {
-    background: var(--bg-elevated);
-}
+.modal-close:hover { background: var(--bg-elevated); }
 
 .modal-media {
-    height: 280px;
+    height: 260px;
     background: var(--bg-elevated);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     border-radius: 6px 6px 0 0;
-    border-bottom: 2px solid var(--border-strong);
+    border-bottom: 2px solid var(--bg-card-hover);
 }
 
-.modal-media img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
+.modal-media img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
 .modal-media-fallback {
-    background: linear-gradient(135deg, color-mix(in srgb, var(--cat-color, var(--accent)) 20%, transparent) 0%, transparent 100%);
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
 }
 
-.modal-media-fallback svg {
-    width: 120px;
-    height: 120px;
-    opacity: 0.9;
-}
+.modal-media-fallback svg { width: 120px; height: 120px; opacity: 0.7; }
 
-.modal-body {
-    padding: 22px 24px 24px;
-}
+.modal-body { padding: 20px 22px 22px; }
 
 .modal-category {
     display: inline-flex;
@@ -672,51 +708,91 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-muted);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
-.modal-cat-icon {
-    display: inline-flex;
-    align-items: center;
-}
-
-.modal-cat-icon svg {
-    width: 16px;
-    height: 16px;
-}
+.modal-cat-icon svg { width: 16px; height: 16px; }
 
 .modal-title {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.4rem;
+    font-weight: 800;
     margin-bottom: 10px;
 }
 
 .modal-target {
     font-size: 1rem;
-    color: var(--accent);
-    font-weight: 600;
+    color: var(--node-yellow);
+    font-weight: 700;
     margin-bottom: 12px;
     padding: 8px 12px;
     background: rgba(251, 191, 36, 0.08);
-    border-left: 3px solid var(--accent);
+    border-left: 3px solid var(--node-yellow);
     border-radius: 4px;
 }
 
 .modal-tip {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     color: var(--text-muted);
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     font-style: italic;
     line-height: 1.5;
 }
 
-.modal-tip:empty {
-    display: none;
+.modal-tip:empty { display: none; }
+
+.modal-unlock {
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+    padding: 10px 12px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px dashed var(--status-done);
+    border-radius: 4px;
+    color: var(--text);
+    line-height: 1.4;
 }
+
+.modal-unlock-label {
+    color: var(--status-done);
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.modal-unlock-name {
+    font-weight: 600;
+}
+
+.modal-unlock:empty { display: none; }
+
+.modal-requires {
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background: rgba(251, 191, 36, 0.06);
+    border: 1px dashed var(--node-yellow);
+    border-radius: 4px;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+.modal-requires-label {
+    color: var(--node-yellow);
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.modal-requires:empty { display: none; }
 
 .modal-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
@@ -727,53 +803,26 @@ body {
 
 .footer {
     text-align: center;
-    padding: 30px 20px;
+    padding: 24px 20px;
     color: var(--text-faint);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-
+/* RESPONSIVE */
 @media (max-width: 800px) {
     .categories-bar {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 32px;
     }
-
-    .categories-bar::before {
-        display: none;
-    }
-
-    .category {
-        padding-top: 0;
-    }
-
-    .category::before {
-        display: none;
-    }
-
-    .stage-header {
-        min-width: 240px;
-        padding: 12px 20px;
-    }
-
-    .stage-title-row {
-        font-size: 1rem;
-    }
+    .categories-bar::before { display: none; }
+    .category { padding-top: 0; }
+    .category::before { display: none; }
+    .stage-header { min-width: 240px; padding: 12px 20px; }
+    .stage-title-row { font-size: 1rem; }
 }
 
 @media (max-width: 500px) {
-    .header h1 {
-        font-size: 1.9rem;
-    }
-
-    .container {
-        padding: 0 14px;
-    }
-
-    .modal-media {
-        height: 220px;
-    }
+    .header h1 { font-size: 1.9rem; }
+    .container { padding: 0 14px; }
+    .modal-media { height: 220px; }
 }

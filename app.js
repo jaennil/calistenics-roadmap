@@ -51,6 +51,32 @@ let progress = loadProgress();
 let uiState = loadUIState();
 let activeExercise = null;
 
+// Линейная прогрессия внутри категории: i требует i-1 выполненным.
+// Для каждого упражнения вычисляем prev/next в его категории.
+const PROGRESSION = (() => {
+    const map = {};
+    ROADMAP.forEach(stage => {
+        stage.categories.forEach(cat => {
+            cat.exercises.forEach((ex, i) => {
+                map[ex.id] = {
+                    prev: i > 0 ? cat.exercises[i - 1] : null,
+                    next: i < cat.exercises.length - 1 ? cat.exercises[i + 1] : null,
+                    stage,
+                    category: cat
+                };
+            });
+        });
+    });
+    return map;
+})();
+
+function isUnlocked(exerciseId) {
+    const link = PROGRESSION[exerciseId];
+    if (!link) return true;
+    if (!link.prev) return true;
+    return !!progress[link.prev.id];
+}
+
 function countExercises() {
     let total = 0;
     let done = 0;
@@ -98,6 +124,13 @@ function updateStageProgress(stage) {
 }
 
 function toggleExercise(exerciseId, stage) {
+    const link = PROGRESSION[exerciseId];
+    if (link && link.prev && !progress[link.prev.id] && !progress[exerciseId]) {
+        log("blocked: prereq", link.prev.id, "not done");
+        alert(`Сначала выполни: «${link.prev.name}»`);
+        return;
+    }
+
     if (progress[exerciseId]) {
         delete progress[exerciseId];
         log("unchecked:", exerciseId);
@@ -107,13 +140,23 @@ function toggleExercise(exerciseId, stage) {
     }
     saveProgress(progress);
 
-    const exEl = document.querySelector(`[data-exercise-id="${exerciseId}"]`);
-    if (exEl) {
-        exEl.classList.toggle("done", !!progress[exerciseId]);
-    }
+    refreshExerciseStates(stage);
     updateStageProgress(stage);
     updateGlobalProgress();
     updateModalToggleBtn(exerciseId);
+}
+
+function refreshExerciseStates(stage) {
+    stage.categories.forEach(cat => {
+        cat.exercises.forEach(ex => {
+            const el = document.querySelector(`[data-exercise-id="${ex.id}"]`);
+            if (!el) return;
+            const done = !!progress[ex.id];
+            const unlocked = isUnlocked(ex.id);
+            el.classList.toggle("done", done);
+            el.classList.toggle("locked", !done && !unlocked);
+        });
+    });
 }
 
 function toggleStage(stageId) {
@@ -171,6 +214,23 @@ function openModal(exercise, category, stage) {
     document.getElementById("modalTarget").textContent = exercise.target;
     document.getElementById("modalTip").textContent = exercise.tip || "";
 
+    const link = PROGRESSION[exercise.id];
+    const requiresEl = document.getElementById("modalRequires");
+    const unlockEl = document.getElementById("modalUnlock");
+    if (link && link.prev) {
+        const prevDone = !!progress[link.prev.id];
+        requiresEl.innerHTML = `<span class="modal-requires-label">Требует</span>` +
+            `<span class="modal-unlock-name">${link.prev.name}</span> — ${prevDone ? "выполнено ✓" : "сначала закрой это"}`;
+    } else {
+        requiresEl.innerHTML = "";
+    }
+    if (link && link.next) {
+        unlockEl.innerHTML = `<span class="modal-unlock-label">Откроет следующее</span>` +
+            `<span class="modal-unlock-name">${link.next.name}</span> — ${link.next.target}`;
+    } else {
+        unlockEl.innerHTML = "";
+    }
+
     const videoLink = document.getElementById("modalVideo");
     videoLink.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(exercise.name + " technique calisthenics")}`;
 
@@ -197,9 +257,12 @@ function updateModalToggleBtn(exerciseId) {
 
 function renderExercise(exercise, category, stage) {
     const isDone = !!progress[exercise.id];
+    const unlocked = isUnlocked(exercise.id);
 
     const el = document.createElement("button");
-    el.className = "exercise" + (isDone ? " done" : "");
+    el.className = "exercise";
+    if (isDone) el.classList.add("done");
+    if (!isDone && !unlocked) el.classList.add("locked");
     el.dataset.exerciseId = exercise.id;
     el.type = "button";
 

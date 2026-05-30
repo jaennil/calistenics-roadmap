@@ -266,6 +266,17 @@ function renderExercise(exercise, category, stage) {
     el.dataset.exerciseId = exercise.id;
     el.type = "button";
 
+    const media = document.createElement("span");
+    media.className = "exercise-media";
+    const img = document.createElement("img");
+    img.src = `img/thumb/${exercise.id}.jpg`;
+    img.dataset.thumb = `img/thumb/${exercise.id}.jpg`;
+    img.dataset.gif = `img/${exercise.id}.gif`;
+    img.alt = exercise.name;
+    img.loading = "lazy";
+    img.draggable = false;
+    media.appendChild(img);
+
     const check = document.createElement("span");
     check.className = "exercise-check";
     check.addEventListener("click", (e) => {
@@ -284,8 +295,18 @@ function renderExercise(exercise, category, stage) {
     body.appendChild(name);
     body.appendChild(target);
 
-    el.appendChild(check);
-    el.appendChild(body);
+    const row = document.createElement("span");
+    row.className = "exercise-row";
+    row.appendChild(check);
+    row.appendChild(body);
+
+    el.appendChild(media);
+    el.appendChild(row);
+
+    // Hover-to-play: подменяем thumb на полноценный GIF при наведении,
+    // возвращаем thumb при уходе — GIF сбрасывается на начало.
+    el.addEventListener("mouseenter", () => { img.src = img.dataset.gif; });
+    el.addEventListener("mouseleave", () => { img.src = img.dataset.thumb; });
 
     el.addEventListener("click", () => openModal(exercise, category, stage));
 

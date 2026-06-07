@@ -33,9 +33,13 @@ function saveProgress(progress) {
 function loadUIState() {
     try {
         const raw = localStorage.getItem(UI_KEY);
-        return raw ? JSON.parse(raw) : { expanded: [] };
+        const saved = raw ? JSON.parse(raw) : {};
+        return {
+            expanded: Array.isArray(saved.expanded) ? saved.expanded : [],
+            view: saved.view === "roadmap" ? "roadmap" : "current"
+        };
     } catch (e) {
-        return { expanded: [] };
+        return { expanded: [], view: "current" };
     }
 }
 
@@ -107,7 +111,7 @@ function updateGlobalProgress() {
     const { total, done } = countExercises();
     const pct = total > 0 ? Math.round((done / total) * 100) : 0;
     document.getElementById("progressFill").style.width = pct + "%";
-    document.getElementById("progressText").textContent = `${done} / ${total} упражнений`;
+    document.getElementById("progressText").textContent = `${done} из ${total} упражнений`;
     document.getElementById("progressPercent").textContent = pct + "%";
     log("global progress:", done, "/", total, `(${pct}%)`);
 }
@@ -143,20 +147,84 @@ function toggleExercise(exerciseId, stage) {
     refreshExerciseStates(stage);
     updateStageProgress(stage);
     updateGlobalProgress();
+    renderCurrentExercises();
     updateModalToggleBtn(exerciseId);
 }
 
 function refreshExerciseStates(stage) {
     stage.categories.forEach(cat => {
         cat.exercises.forEach(ex => {
-            const el = document.querySelector(`[data-exercise-id="${ex.id}"]`);
-            if (!el) return;
             const done = !!progress[ex.id];
             const unlocked = isUnlocked(ex.id);
-            el.classList.toggle("done", done);
-            el.classList.toggle("locked", !done && !unlocked);
+            document.querySelectorAll(`[data-exercise-id="${ex.id}"]`).forEach(el => {
+                el.classList.toggle("done", done);
+                el.classList.toggle("locked", !done && !unlocked);
+            });
         });
     });
+}
+
+function getCurrentStage() {
+    return ROADMAP.find(stage => {
+        const { total, done } = countStageExercises(stage);
+        return done < total;
+    }) || null;
+}
+
+function renderCurrentExercises() {
+    const container = document.getElementById("currentExercises");
+    const stage = getCurrentStage();
+    container.innerHTML = "";
+
+    if (!stage) {
+        document.getElementById("currentStageTitle").textContent = "Карта завершена";
+        document.getElementById("currentStagePeriod").textContent = "Все этапы пройдены";
+        document.getElementById("currentStageProgress").textContent = "100%";
+        const empty = document.createElement("div");
+        empty.className = "current-empty";
+        empty.innerHTML = "<strong>Все упражнения выполнены</strong><span>Отметки можно изменить на вкладке «Вся карта».</span>";
+        container.appendChild(empty);
+        return;
+    }
+
+    const { total, done } = countStageExercises(stage);
+    document.getElementById("currentStageTitle").textContent = stage.title.replace(/^Этап \d+ — /, "");
+    document.getElementById("currentStagePeriod").textContent = stage.period;
+    document.getElementById("currentStageProgress").textContent = `${done} / ${total}`;
+
+    stage.categories.forEach(category => {
+        const exercise = category.exercises.find(ex => !progress[ex.id] && isUnlocked(ex.id));
+        if (!exercise) return;
+
+        const meta = CATEGORY_META[category.kind] || { icon: "", color: "#888" };
+        const item = document.createElement("article");
+        item.className = "current-item";
+
+        const label = document.createElement("div");
+        label.className = "current-category";
+        label.style.setProperty("--cat-color", meta.color);
+        label.innerHTML = `<span class="category-icon">${meta.icon}</span><span></span>`;
+        label.lastElementChild.textContent = category.title;
+
+        const card = renderExercise(exercise, category, stage);
+        card.classList.add("current-exercise");
+        item.appendChild(label);
+        item.appendChild(card);
+        container.appendChild(item);
+    });
+}
+
+function setView(view) {
+    uiState.view = view === "roadmap" ? "roadmap" : "current";
+    saveUIState(uiState);
+
+    document.querySelectorAll(".view-tab").forEach(tab => {
+        const active = tab.dataset.view === uiState.view;
+        tab.classList.toggle("active", active);
+        tab.setAttribute("aria-selected", String(active));
+    });
+    document.getElementById("currentView").hidden = uiState.view !== "current";
+    document.getElementById("roadmapView").hidden = uiState.view !== "roadmap";
 }
 
 function toggleStage(stageId) {
@@ -397,6 +465,7 @@ function render() {
         container.appendChild(renderStage(stage, i));
     });
     updateGlobalProgress();
+    renderCurrentExercises();
 }
 
 function expandAll() {
@@ -427,6 +496,10 @@ function resetProgress() {
 document.addEventListener("DOMContentLoaded", () => {
     log("DOM ready, initializing");
     render();
+    setView(uiState.view);
+    document.querySelectorAll(".view-tab").forEach(tab => {
+        tab.addEventListener("click", () => setView(tab.dataset.view));
+    });
     document.getElementById("expandAllBtn").addEventListener("click", expandAll);
     document.getElementById("collapseAllBtn").addEventListener("click", collapseAll);
     document.getElementById("resetBtn").addEventListener("click", resetProgress);

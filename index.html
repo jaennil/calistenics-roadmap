@@ -8,32 +8,60 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <h1>Calisthenics Roadmap</h1>
-            <p class="subtitle">Путь от нуля до продвинутых элементов</p>
-            <div class="progress-wrapper">
-                <div class="progress-bar">
+    <header class="app-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <h1>Calisthenics Roadmap</h1>
+                <p class="subtitle">От базы к сложным элементам</p>
+            </div>
+            <div class="progress-summary" aria-label="Общий прогресс">
+                <div class="progress-copy">
+                    <span class="progress-label">Общий прогресс</span>
+                    <strong id="progressPercent">0%</strong>
+                </div>
+                <div class="progress-bar" aria-hidden="true">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="progress-text">
-                    <span id="progressText">0 / 0</span>
-                    <span id="progressPercent">0%</span>
-                </div>
-            </div>
-            <div class="controls">
-                <button class="btn btn-secondary" id="expandAllBtn">Развернуть всё</button>
-                <button class="btn btn-secondary" id="collapseAllBtn">Свернуть всё</button>
-                <button class="btn btn-danger" id="resetBtn">Сбросить прогресс</button>
+                <span id="progressText">0 из 0 упражнений</span>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <div class="roadmap" id="roadmap"></div>
+        <nav class="view-tabs" role="tablist" aria-label="Разделы">
+            <button class="view-tab active" id="currentTab" type="button" role="tab" aria-selected="true" aria-controls="currentView" data-view="current">Сейчас</button>
+            <button class="view-tab" id="roadmapTab" type="button" role="tab" aria-selected="false" aria-controls="roadmapView" data-view="roadmap">Вся карта</button>
+        </nav>
+
+        <section class="view-panel" id="currentView" role="tabpanel" aria-labelledby="currentTab">
+            <div class="current-heading">
+                <div>
+                    <span class="section-kicker">Текущий этап</span>
+                    <h2 id="currentStageTitle">Подготовка тела</h2>
+                    <p id="currentStagePeriod"></p>
+                </div>
+                <span class="stage-total" id="currentStageProgress">0 / 0</span>
+            </div>
+            <div class="current-grid" id="currentExercises"></div>
+        </section>
+
+        <section class="view-panel" id="roadmapView" role="tabpanel" aria-labelledby="roadmapTab" hidden>
+            <div class="roadmap-toolbar">
+                <div>
+                    <span class="section-kicker">Все этапы</span>
+                    <h2>Карта развития</h2>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-secondary" id="expandAllBtn">Развернуть всё</button>
+                    <button class="btn btn-secondary" id="collapseAllBtn">Свернуть всё</button>
+                    <button class="btn btn-danger" id="resetBtn">Сбросить</button>
+                </div>
+            </div>
+            <div class="roadmap" id="roadmap"></div>
+        </section>
 
         <footer class="footer">
-            <p>Прогресс сохраняется автоматически в этом браузере. Клик по карточке упражнения — детали и GIF.</p>
+            <p>Прогресс сохраняется в этом браузере.</p>
         </footer>
     </main>
 

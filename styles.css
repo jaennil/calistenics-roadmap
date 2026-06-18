@@ -975,6 +975,12 @@ body {
     font-weight: 600;
 }
 
+.modal-stage-hint {
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
 .modal-unlock:empty { display: none; }
 
 .modal-requires {

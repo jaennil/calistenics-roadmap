@@ -55,22 +55,38 @@ let progress = loadProgress();
 let uiState = loadUIState();
 let activeExercise = null;
 
-// Линейная прогрессия внутри категории: i требует i-1 выполненным.
-// Для каждого упражнения вычисляем prev/next в его категории.
+// Линейная прогрессия по `kind` категории через все этапы:
+// последнее упражнение `push` этапа 1 → первое `push` этапа 2 и т.д.
 const PROGRESSION = (() => {
     const map = {};
+    const chainsByKind = {};
+
     ROADMAP.forEach(stage => {
         stage.categories.forEach(cat => {
-            cat.exercises.forEach((ex, i) => {
-                map[ex.id] = {
-                    prev: i > 0 ? cat.exercises[i - 1] : null,
-                    next: i < cat.exercises.length - 1 ? cat.exercises[i + 1] : null,
-                    stage,
-                    category: cat
-                };
+            if (!chainsByKind[cat.kind]) chainsByKind[cat.kind] = [];
+            cat.exercises.forEach(ex => {
+                chainsByKind[cat.kind].push({ ex, stage, category: cat });
             });
         });
     });
+
+    Object.entries(chainsByKind).forEach(([kind, chain]) => {
+        const stageCount = new Set(chain.map(n => n.stage.id)).size;
+        log(`progression chain "${kind}":`, chain.length, "exercises across", stageCount, "stages");
+        chain.forEach((node, i) => {
+            const prevNode = i > 0 ? chain[i - 1] : null;
+            const nextNode = i < chain.length - 1 ? chain[i + 1] : null;
+            map[node.ex.id] = {
+                prev: prevNode ? prevNode.ex : null,
+                prevStage: prevNode ? prevNode.stage : null,
+                next: nextNode ? nextNode.ex : null,
+                nextStage: nextNode ? nextNode.stage : null,
+                stage: node.stage,
+                category: node.category
+            };
+        });
+    });
+
     return map;
 })();
 
@@ -144,23 +160,25 @@ function toggleExercise(exerciseId, stage) {
     }
     saveProgress(progress);
 
-    refreshExerciseStates(stage);
-    updateStageProgress(stage);
+    refreshExerciseStates();
     updateGlobalProgress();
     renderCurrentExercises();
     updateModalToggleBtn(exerciseId);
 }
 
-function refreshExerciseStates(stage) {
-    stage.categories.forEach(cat => {
-        cat.exercises.forEach(ex => {
-            const done = !!progress[ex.id];
-            const unlocked = isUnlocked(ex.id);
-            document.querySelectorAll(`[data-exercise-id="${ex.id}"]`).forEach(el => {
-                el.classList.toggle("done", done);
-                el.classList.toggle("locked", !done && !unlocked);
+function refreshExerciseStates() {
+    ROADMAP.forEach(stage => {
+        stage.categories.forEach(cat => {
+            cat.exercises.forEach(ex => {
+                const done = !!progress[ex.id];
+                const unlocked = isUnlocked(ex.id);
+                document.querySelectorAll(`[data-exercise-id="${ex.id}"]`).forEach(el => {
+                    el.classList.toggle("done", done);
+                    el.classList.toggle("locked", !done && !unlocked);
+                });
             });
         });
+        updateStageProgress(stage);
     });
 }
 
@@ -285,16 +303,19 @@ function openModal(exercise, category, stage) {
     const link = PROGRESSION[exercise.id];
     const requiresEl = document.getElementById("modalRequires");
     const unlockEl = document.getElementById("modalUnlock");
+    const stageHint = (linkStage) => linkStage && linkStage.id !== stage.id
+        ? ` <span class="modal-stage-hint">(${linkStage.title.replace(/^Этап \d+ — /, "Этап " + linkStage.id.replace("stage-", "") + ", ")})</span>`
+        : "";
     if (link && link.prev) {
         const prevDone = !!progress[link.prev.id];
         requiresEl.innerHTML = `<span class="modal-requires-label">Требует</span>` +
-            `<span class="modal-unlock-name">${link.prev.name}</span> — ${prevDone ? "выполнено ✓" : "сначала закрой это"}`;
+            `<span class="modal-unlock-name">${link.prev.name}</span>${stageHint(link.prevStage)} — ${prevDone ? "выполнено ✓" : "сначала закрой это"}`;
     } else {
         requiresEl.innerHTML = "";
     }
     if (link && link.next) {
         unlockEl.innerHTML = `<span class="modal-unlock-label">Откроет следующее</span>` +
-            `<span class="modal-unlock-name">${link.next.name}</span> — ${link.next.target}`;
+            `<span class="modal-unlock-name">${link.next.name}</span>${stageHint(link.nextStage)} — ${link.next.target}`;
     } else {
         unlockEl.innerHTML = "";
     }

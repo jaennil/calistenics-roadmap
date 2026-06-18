@@ -981,6 +981,15 @@ body {
     font-size: 0.78rem;
 }
 
+.current-stage-hint {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-left: 4px;
+}
+
 .modal-unlock:empty { display: none; }
 
 .modal-requires {

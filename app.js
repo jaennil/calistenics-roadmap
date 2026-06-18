@@ -210,26 +210,59 @@ function renderCurrentExercises() {
     document.getElementById("currentStagePeriod").textContent = stage.period;
     document.getElementById("currentStageProgress").textContent = `${done} / ${total}`;
 
+    const seenKinds = new Set();
+    const stageIdx = ROADMAP.indexOf(stage);
+
     stage.categories.forEach(category => {
-        const exercise = category.exercises.find(ex => !progress[ex.id] && isUnlocked(ex.id));
+        seenKinds.add(category.kind);
+        const { exercise, category: cat, stage: st } = findActiveInChain(category.kind, stage) || {};
         if (!exercise) return;
-
-        const meta = CATEGORY_META[category.kind] || { icon: "", color: "#888" };
-        const item = document.createElement("article");
-        item.className = "current-item";
-
-        const label = document.createElement("div");
-        label.className = "current-category";
-        label.style.setProperty("--cat-color", meta.color);
-        label.innerHTML = `<span class="category-icon">${meta.icon}</span><span></span>`;
-        label.lastElementChild.textContent = category.title;
-
-        const card = renderExercise(exercise, category, stage);
-        card.classList.add("current-exercise");
-        item.appendChild(label);
-        item.appendChild(card);
-        container.appendChild(item);
+        appendCurrentItem(container, exercise, cat, st, stage);
     });
+
+    // Цепочки, у которых нет категории в текущем этапе,
+    // но они уже стартанули в более ранних — продолжаем дальше.
+    ROADMAP.slice(0, stageIdx).forEach(prevStage => {
+        prevStage.categories.forEach(category => {
+            if (seenKinds.has(category.kind)) return;
+            seenKinds.add(category.kind);
+            const { exercise, category: cat, stage: st } = findActiveInChain(category.kind, stage) || {};
+            if (!exercise) return;
+            appendCurrentItem(container, exercise, cat, st, stage);
+        });
+    });
+}
+
+function findActiveInChain(kind, fromStage) {
+    const fromIdx = ROADMAP.indexOf(fromStage);
+    for (let i = fromIdx; i < ROADMAP.length; i++) {
+        const cat = ROADMAP[i].categories.find(c => c.kind === kind);
+        if (!cat) continue;
+        const ex = cat.exercises.find(e => !progress[e.id] && isUnlocked(e.id));
+        if (ex) return { exercise: ex, category: cat, stage: ROADMAP[i] };
+    }
+    return null;
+}
+
+function appendCurrentItem(container, exercise, category, stage, currentStage) {
+    const meta = CATEGORY_META[category.kind] || { icon: "", color: "#888" };
+    const item = document.createElement("article");
+    item.className = "current-item";
+
+    const label = document.createElement("div");
+    label.className = "current-category";
+    label.style.setProperty("--cat-color", meta.color);
+    const aheadHint = stage.id !== currentStage.id
+        ? ` <span class="current-stage-hint">· Этап ${stage.id.replace("stage-", "")}</span>`
+        : "";
+    label.innerHTML = `<span class="category-icon">${meta.icon}</span><span></span>${aheadHint}`;
+    label.querySelectorAll("span")[1].textContent = category.title;
+
+    const card = renderExercise(exercise, category, stage);
+    card.classList.add("current-exercise");
+    item.appendChild(label);
+    item.appendChild(card);
+    container.appendChild(item);
 }
 
 function setView(view) {

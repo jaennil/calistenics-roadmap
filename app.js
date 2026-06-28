@@ -215,23 +215,54 @@ function renderCurrentExercises() {
 
     stage.categories.forEach(category => {
         seenKinds.add(category.kind);
-        const { exercise, category: cat, stage: st } = findActiveInChain(category.kind, stage) || {};
-        if (!exercise) return;
-        appendCurrentItem(container, exercise, cat, st, stage);
+        renderKindSlot(container, category, stage);
     });
 
-    // Цепочки, у которых нет категории в текущем этапе,
-    // но они уже стартанули в более ранних — продолжаем дальше.
     ROADMAP.slice(0, stageIdx).forEach(prevStage => {
         prevStage.categories.forEach(category => {
             if (seenKinds.has(category.kind)) return;
             seenKinds.add(category.kind);
-            const { exercise, category: cat, stage: st } = findActiveInChain(category.kind, stage) || {};
-            if (!exercise) return;
-            appendCurrentItem(container, exercise, cat, st, stage);
+            renderKindSlot(container, category, stage);
         });
     });
 }
+
+function renderKindSlot(container, anchorCategory, currentStage) {
+    const found = findActiveInChain(anchorCategory.kind, ROADMAP[0]);
+    if (found) {
+        appendCurrentItem(container, found.exercise, found.category, found.stage, currentStage);
+        return;
+    }
+    appendCompleteItem(container, anchorCategory);
+}
+
+function appendCompleteItem(container, category) {
+    const meta = CATEGORY_META[category.kind] || { icon: "", color: "#888" };
+    const item = document.createElement("article");
+    item.className = "current-item current-item--complete";
+
+    const label = document.createElement("div");
+    label.className = "current-category";
+    label.style.setProperty("--cat-color", meta.color);
+    label.innerHTML = `<span class="category-icon">${meta.icon}</span><span></span>`;
+    label.querySelectorAll("span")[1].textContent = category.title;
+
+    const card = document.createElement("div");
+    card.className = "current-complete-card";
+    card.innerHTML = `<span class="current-complete-check">✓</span><span>Все упражнения этой группы закрыты</span>`;
+    item.appendChild(label);
+    item.appendChild(card);
+    container.appendChild(item);
+}
+
+// Когда «нативная» цепочка kind заканчивается, ищем продолжение
+// в более поздних skill-категориях — там push/pull прячутся под общим skill.
+const KIND_KEYWORDS = {
+    push:  ["push-up", "push up", "pushup", "planche", "handstand", "hspu", "press", "dip", "tiger bend", "maltese", "iron cross", "victorian", "90-degree"],
+    pull:  ["pull-up", "pullup", "lever", "muscle-up", "muscle up", "flag", "hefesto", "chin-up"],
+    legs:  ["squat", "lunge", "pistol", "shrimp", "calf", "nordic", "glute"],
+    core:  ["plank", "l-sit", "v-sit", "manna", "dragon", "hollow", "leg raise", "crunch", "side bridge"]
+};
 
 function findActiveInChain(kind, fromStage) {
     const fromIdx = ROADMAP.indexOf(fromStage);
@@ -240,6 +271,20 @@ function findActiveInChain(kind, fromStage) {
         if (!cat) continue;
         const ex = cat.exercises.find(e => !progress[e.id] && isUnlocked(e.id));
         if (ex) return { exercise: ex, category: cat, stage: ROADMAP[i] };
+    }
+    const kws = KIND_KEYWORDS[kind] || [];
+    if (!kws.length) return null;
+    for (let i = fromIdx; i < ROADMAP.length; i++) {
+        for (const cat of ROADMAP[i].categories) {
+            if (cat.kind === kind) continue;
+            for (const ex of cat.exercises) {
+                if (progress[ex.id] || !isUnlocked(ex.id)) continue;
+                const n = ex.name.toLowerCase();
+                if (kws.some(k => n.includes(k))) {
+                    return { exercise: ex, category: cat, stage: ROADMAP[i] };
+                }
+            }
+        }
     }
     return null;
 }

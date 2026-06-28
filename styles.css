@@ -264,6 +264,33 @@ body {
     display: none;
 }
 
+.current-complete-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--node-ex-bg);
+    border: 1.5px dashed var(--status-done);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.current-complete-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--status-done);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
 .current-exercise .exercise-media {
     aspect-ratio: 1 / 1;
 }

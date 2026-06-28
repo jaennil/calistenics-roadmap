@@ -150,7 +150,8 @@ const ROADMAP = [
                     { id: "s3-1", name: "Отжимания на одной руке (assisted)", target: "3×5 на руку", tip: "Вторая рука на скамье" },
                     { id: "s3-3", name: "Pseudo planche push-ups", target: "3×8", tip: "Кисти у пояса, корпус наклонён вперёд" },
                     { id: "s3-5", name: "Wall handstand hold", target: "3×30 секунд", tip: "Стойка у стены лицом или спиной" },
-                    { id: "s3-4", name: "Отжимания на брусьях с весом", target: "3×8 с +10 кг", tip: "" }
+                    { id: "s3-4", name: "Отжимания на брусьях с весом", target: "3×8 с +10 кг", tip: "" },
+                    { id: "s3-18", name: "Tuck planche hold", target: "3×15 секунд", tip: "Колени к груди, опора на руки" }
                 ]
             },
             {
@@ -175,13 +176,12 @@ const ROADMAP = [
                 ]
             },
             {
-                title: "Корпус и скиллы",
-                kind: "skill",
+                title: "Корпус",
+                kind: "core",
                 exercises: [
                     { id: "s3-15", name: "L-sit", target: "3×20 секунд", tip: "Ноги прямые параллельно полу" },
                     { id: "s3-16", name: "Подъём прямых ног в висе", target: "3×8", tip: "Ноги до перекладины" },
-                    { id: "s3-17", name: "Dragon flag (negative)", target: "3×5", tip: "Медленный спуск" },
-                    { id: "s3-18", name: "Tuck planche hold", target: "3×15 секунд", tip: "Колени к груди, опора на руки" }
+                    { id: "s3-17", name: "Dragon flag (negative)", target: "3×5", tip: "Медленный спуск" }
                 ]
             }
         ]
@@ -193,34 +193,34 @@ const ROADMAP = [
         description: "Освоение классических элементов калистеники: muscle-up, handstand, advanced tuck.",
         categories: [
             {
-                title: "Скиллы — верх",
-                kind: "skill",
+                title: "Жимы",
+                kind: "push",
                 exercises: [
-                    { id: "s4-5", name: "Pseudo planche push-ups (глубокие)", target: "3×8", tip: "Лопатки протрактированы" },
-                    { id: "s4-1", name: "Muscle-up (negative)", target: "3×3", tip: "Медленный спуск из верхней точки" },
-                    { id: "s4-2", name: "Muscle-up", target: "3×3", tip: "Чистый, без рывка ногами" },
                     { id: "s4-3", name: "Freestanding handstand", target: "3×15 секунд", tip: "Без стены" },
-                    { id: "s4-4", name: "Handstand push-up (у стены)", target: "3×5", tip: "" }
-                ]
-            },
-            {
-                title: "Статика",
-                kind: "skill",
-                exercises: [
-                    { id: "s4-9", name: "L-sit на брусьях", target: "3×30 секунд", tip: "" },
-                    { id: "s4-10", name: "Dragon flag", target: "3×5", tip: "Полный контроль" },
-                    { id: "s4-8", name: "Back lever (tuck)", target: "3×10 секунд", tip: "" },
-                    { id: "s4-7", name: "Advanced tuck front lever", target: "3×15 секунд", tip: "" },
+                    { id: "s4-4", name: "Handstand push-up (у стены)", target: "3×5", tip: "" },
+                    { id: "s4-5", name: "Pseudo planche push-ups (глубокие)", target: "3×8", tip: "Лопатки протрактированы" },
                     { id: "s4-6", name: "Advanced tuck planche", target: "3×15 секунд", tip: "Спина круглая, ноги подтянуты" }
                 ]
             },
             {
-                title: "Сила тяги",
+                title: "Тяги",
                 kind: "pull",
                 exercises: [
+                    { id: "s4-1", name: "Muscle-up (negative)", target: "3×3", tip: "Медленный спуск из верхней точки" },
+                    { id: "s4-2", name: "Muscle-up", target: "3×3", tip: "Чистый, без рывка ногами" },
+                    { id: "s4-11", name: "Подтягивания на одной руке (assisted)", target: "3×3 на руку", tip: "Помощь второй рукой держа за запястье" },
                     { id: "s4-12", name: "Front lever raises (tuck)", target: "3×6", tip: "" },
                     { id: "s4-13", name: "Typewriter pull-ups", target: "3×4 на сторону", tip: "Передвижение в верхней точке" },
-                    { id: "s4-11", name: "Подтягивания на одной руке (assisted)", target: "3×3 на руку", tip: "Помощь второй рукой держа за запястье" }
+                    { id: "s4-7", name: "Advanced tuck front lever", target: "3×15 секунд", tip: "" },
+                    { id: "s4-8", name: "Back lever (tuck)", target: "3×10 секунд", tip: "" }
+                ]
+            },
+            {
+                title: "Корпус",
+                kind: "core",
+                exercises: [
+                    { id: "s4-9", name: "L-sit на брусьях", target: "3×30 секунд", tip: "" },
+                    { id: "s4-10", name: "Dragon flag", target: "3×5", tip: "Полный контроль" }
                 ]
             }
         ]
@@ -232,46 +232,46 @@ const ROADMAP = [
         description: "Топ-элементы калистеники. Требуют системного и долгого подхода. Многие требуют доступа к кольцам.",
         categories: [
             {
-                title: "Статические элементы",
-                kind: "skill",
+                title: "Жимы — элита",
+                kind: "push",
                 exercises: [
-                    { id: "s5-4", name: "Full back lever", target: "3×10 секунд", tip: "Лицом вниз, тело параллельно полу" },
-                    { id: "s5-13", name: "V-sit", target: "3×5 секунд", tip: "Продвинутый L-sit — ноги выше уровня головы" },
-                    { id: "s5-3", name: "Full front lever", target: "3×10 секунд", tip: "Лицом вверх, тело параллельно полу" },
-                    { id: "s5-5", name: "Human flag", target: "3×8 секунд", tip: "Тело горизонтально, опора на вертикальный шест" },
                     { id: "s5-1", name: "Straddle planche", target: "3×10 секунд", tip: "Ноги разведены в стороны — облегчённая версия full planche" },
-                    { id: "s5-2", name: "Full planche", target: "3×5 секунд", tip: "Тело параллельно полу, ноги вместе" },
                     { id: "s5-15", name: "90-degree push-up hold", target: "3×5 секунд", tip: "Тело горизонтально, руки согнуты под 90°" },
-                    { id: "s5-14", name: "Manna", target: "3×3 секунды", tip: "Из V-sit прогиб назад с опорой на руки" },
+                    { id: "s5-17", name: "One-arm handstand", target: "1×5 секунд", tip: "Стойка на одной руке" },
+                    { id: "s5-16", name: "Press to handstand", target: "3×3", tip: "Выход в стойку на руках без прыжка, через L-sit/straddle" },
+                    { id: "s5-9", name: "Handstand push-up freestanding", target: "3×3", tip: "Без стены, полная амплитуда" },
+                    { id: "s5-20", name: "Tiger bend press", target: "3×3", tip: "Жим в стойку из позиции на предплечьях" },
+                    { id: "s5-21", name: "Russian dip", target: "3×3", tip: "Отжимание на брусьях с переходом через предплечья" },
+                    { id: "s5-22", name: "Korean dip", target: "3×3", tip: "Отжимание на брусьях лицом назад" },
+                    { id: "s5-8", name: "One-arm push-up", target: "3×5 на руку", tip: "Без поворота корпуса" },
+                    { id: "s5-2", name: "Full planche", target: "3×5 секунд", tip: "Тело параллельно полу, ноги вместе" },
+                    { id: "s5-10", name: "Planche push-up", target: "3×3", tip: "Отжимание в планше" },
+                    { id: "s5-24", name: "Inverted cross", target: "1×3 секунды", tip: "Перевёрнутый железный крест на кольцах" },
+                    { id: "s5-23", name: "Victorian cross", target: "1×3 секунды", tip: "Maltese в обратном положении — лицом вниз" },
                     { id: "s5-6", name: "Maltese (assisted)", target: "3×5 секунд", tip: "Тело параллельно полу, руки в стороны, на кольцах" }
                 ]
             },
             {
-                title: "Силовые элементы",
-                kind: "skill",
+                title: "Тяги — элита",
+                kind: "pull",
                 exercises: [
-                    { id: "s5-8", name: "One-arm push-up", target: "3×5 на руку", tip: "Без поворота корпуса" },
-                    { id: "s5-9", name: "Handstand push-up freestanding", target: "3×3", tip: "Без стены, полная амплитуда" },
                     { id: "s5-7", name: "One-arm pull-up", target: "1 чистое повторение", tip: "Король калистеники" },
-                    { id: "s5-16", name: "Press to handstand", target: "3×3", tip: "Выход в стойку на руках без прыжка, через L-sit/straddle" },
-                    { id: "s5-19", name: "Back lever pull-up", target: "3×3", tip: "Подтягивание из back lever" },
+                    { id: "s5-5", name: "Human flag", target: "3×8 секунд", tip: "Тело горизонтально, опора на вертикальный шест" },
+                    { id: "s5-4", name: "Full back lever", target: "3×10 секунд", tip: "Лицом вниз, тело параллельно полу" },
+                    { id: "s5-3", name: "Full front lever", target: "3×10 секунд", tip: "Лицом вверх, тело параллельно полу" },
                     { id: "s5-11", name: "Front lever pull-up", target: "3×3", tip: "Подтягивание из позиции front lever" },
-                    { id: "s5-20", name: "Tiger bend press", target: "3×3", tip: "Жим в стойку из позиции на предплечьях" },
-                    { id: "s5-10", name: "Planche push-up", target: "3×3", tip: "Отжимание в планше" },
+                    { id: "s5-19", name: "Back lever pull-up", target: "3×3", tip: "Подтягивание из back lever" },
+                    { id: "s5-25", name: "Reverse muscle-up", target: "1 чистое повторение", tip: "Опускание из muscle-up в полный передний рычаг" },
                     { id: "s5-18", name: "Hefesto", target: "1 чистое повторение", tip: "Обратный muscle-up — выход из back lever" },
-                    { id: "s5-17", name: "One-arm handstand", target: "1×5 секунд", tip: "Стойка на одной руке" }
+                    { id: "s5-12", name: "Iron cross", target: "3×5 секунд", tip: "Железный крест на кольцах" }
                 ]
             },
             {
-                title: "Кольца и динамика",
-                kind: "skill",
+                title: "Корпус — элита",
+                kind: "core",
                 exercises: [
-                    { id: "s5-21", name: "Russian dip", target: "3×3", tip: "Отжимание на брусьях с переходом через предплечья" },
-                    { id: "s5-22", name: "Korean dip", target: "3×3", tip: "Отжимание на брусьях лицом назад" },
-                    { id: "s5-12", name: "Iron cross", target: "3×5 секунд", tip: "Железный крест на кольцах" },
-                    { id: "s5-24", name: "Inverted cross", target: "1×3 секунды", tip: "Перевёрнутый железный крест на кольцах" },
-                    { id: "s5-23", name: "Victorian cross", target: "1×3 секунды", tip: "Maltese в обратном положении — лицом вниз" },
-                    { id: "s5-25", name: "Reverse muscle-up", target: "1 чистое повторение", tip: "Опускание из muscle-up в полный передний рычаг" }
+                    { id: "s5-13", name: "V-sit", target: "3×5 секунд", tip: "Продвинутый L-sit — ноги выше уровня головы" },
+                    { id: "s5-14", name: "Manna", target: "3×3 секунды", tip: "Из V-sit прогиб назад с опорой на руки" }
                 ]
             }
         ]

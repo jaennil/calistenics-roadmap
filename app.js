@@ -255,15 +255,6 @@ function appendCompleteItem(container, category) {
     container.appendChild(item);
 }
 
-// Когда «нативная» цепочка kind заканчивается, ищем продолжение
-// в более поздних skill-категориях — там push/pull прячутся под общим skill.
-const KIND_KEYWORDS = {
-    push:  ["push-up", "push up", "pushup", "planche", "handstand", "hspu", "press", "dip", "tiger bend", "maltese", "iron cross", "victorian", "90-degree"],
-    pull:  ["pull-up", "pullup", "lever", "muscle-up", "muscle up", "flag", "hefesto", "chin-up"],
-    legs:  ["squat", "lunge", "pistol", "shrimp", "calf", "nordic", "glute"],
-    core:  ["plank", "l-sit", "v-sit", "manna", "dragon", "hollow", "leg raise", "crunch", "side bridge"]
-};
-
 function findActiveInChain(kind, fromStage) {
     const fromIdx = ROADMAP.indexOf(fromStage);
     for (let i = fromIdx; i < ROADMAP.length; i++) {
@@ -271,20 +262,6 @@ function findActiveInChain(kind, fromStage) {
         if (!cat) continue;
         const ex = cat.exercises.find(e => !progress[e.id] && isUnlocked(e.id));
         if (ex) return { exercise: ex, category: cat, stage: ROADMAP[i] };
-    }
-    const kws = KIND_KEYWORDS[kind] || [];
-    if (!kws.length) return null;
-    for (let i = fromIdx; i < ROADMAP.length; i++) {
-        for (const cat of ROADMAP[i].categories) {
-            if (cat.kind === kind) continue;
-            for (const ex of cat.exercises) {
-                if (progress[ex.id] || !isUnlocked(ex.id)) continue;
-                const n = ex.name.toLowerCase();
-                if (kws.some(k => n.includes(k))) {
-                    return { exercise: ex, category: cat, stage: ROADMAP[i] };
-                }
-            }
-        }
     }
     return null;
 }
